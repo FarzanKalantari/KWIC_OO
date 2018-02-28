@@ -1,13 +1,16 @@
+import java.io.IOException;
 
-	
-	public static void main(String args[]) {
-		System.out.println("hello"); //Farzan's commit
-//oo		//test
-		//comment from local
+public class KWICdriver {
 
-//kkk
-		
-		//dd
+	public static void main(String args[]) throws IOException {
+
+		Input input = new Input();
+		LineStorage lineStorage = new LineStorage();
+		CircularShift circularShift = new CircularShift();
+
+		input.read("C:\\Users\\ac3_o\\Documents\\eclipse workspace\\KWIC_OO\\test.txt");
+		input.store(lineStorage);
+		circularShift.setup(lineStorage);
 	}
 
 }
