@@ -1,37 +1,101 @@
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * CircularShift: Performs circular word shift to the right
+ *
+ */
 public class CircularShift {
 
+	/**
+	 * Line Storage object
+	 */
+	LineStorage lineStorage;
 
-        public void setup(LineStorage lineStorage) {
-                String[] shiftedWords;
+	/**
+	 * Stores circular line list
+	 */
+	List<String> circularLineList;
 
-        //      shiftedWords = new String[lineStorage.getInputList().size()];
+	/**
+	 * Construct the Circular Shift object based on Line Storage object
+	 * 
+	 * @param lineStorage
+	 */
+	public CircularShift(LineStorage lineStorage) {
+		this.lineStorage = lineStorage;
+		circularLineList = new ArrayList<String>();
+	}
 
-                //lineStorage.getInputList().get(i).toString().length()
+	/**
+	 * Performs the circular shifts and adds them to the circular line list
+	 */
+	public void setup() {
+		String line = null;
 
-                for(int i = 0; i < lineStorage.getLineCount(); i++){
-        //              System.out.println("shift test" + lineStorage.getLine(i));
-//                      System.arraycopy(lineStorage.getLine(i), 1 , shiftedWords, 0,  (ArrayList) lineStorage.getInputList().get(i).toString().length() -1);
-//                      System.arraycopy(lineStorage.getLine(i), 0 , shiftedWords, lineStorage.getInputList().get(i).toString().length() -1, 1);
-                }
+		// Loop through all lines in the line storage until there is no more
+		// lines available
+		for (int lineNumber = 1; (line = lineStorage.getLine(lineNumber)) != null; lineNumber++) {
+			// System.out.println("Line number " + lineNumber + ": " + line);
 
+			// Add the original line to the list
+			circularLineList.add(line);
+			// System.out.println(line);
 
+			// Perform the circular shift based on the list of words in that
+			// line retrieved from line storage
+			String array[] = lineStorage.getWord(lineNumber);
+			int shift = array.length - 1;
+			for (int i = 0; i < shift; i++) {
+				addCircleShiftRight(array, shift);
+			}
+			// System.out.println();
+		}
 
-        System.out.println("input list: " + lineStorage.getInputList());
-        System.out.println("get shift line: " + lineStorage.getWord(0, 0));
+		/*
+		 * for (String l: circularLineList) { System.out.println(l); }
+		 */
+	}
 
+	/**
+	 * Perform circular shift of the array based on the shift value (or, number
+	 * of shifts)
+	 * 
+	 * @param array
+	 * @param shift
+	 */
+	private void addCircleShiftRight(String[] array, int shift) {
+		// Copy the array from the original array based on the shift
+		String[] array2 = new String[shift];
+		for (int i = 0; i < shift; i++) {
+			array2[i] = array[i];
+		}
 
-     
+		// Move the last array elements to the front
+		System.arraycopy(array, shift, array, 0, array.length - shift);
 
-              //          shifts_.addWord(line[k % line.length], shifts_.getLineCount() - 1); (chars, int)
+		// Initialize the lines first word
+		String line = array[0];
 
+		// Fill up the rest of array based on the shift
+		for (int i = array.length - shift; i < array.length; i++) {
+			array[i] = array2[shift + i - array.length];
 
-        //      System.out.println("get char:" + lineStorage.getChar(1, 0, 0));
-        //      String shiftedSentence = String.join(" ", shiftedWords);
-                //System.out.println("get word: " +     lineStorage.getWord(0, 0));
+			// Update the line with current word
+			line += " " + array[i];
+		}
 
+		// Add this shifted line to the list
+		// System.out.println(line);
+		circularLineList.add(line);
+	}
 
-                //System.out.println("shifted sentence in circular shift:" + shiftedSentence);
-
-        }
+	/**
+	 * @return Get the circular line list
+	 */
+	public List<String> getLine() {
+		return circularLineList;
+	}
 
 }
